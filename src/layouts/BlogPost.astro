@@ -156,7 +156,14 @@ const charsLabel = chars.toLocaleString('en-US');
 								heroImage &&
 									(typeof heroImage === 'string' ? (
 										<div class="mb-8 aspect-[16/9] overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
-											<img src={withBase(heroImage)} alt={title} class="h-full w-full object-cover" loading="lazy" />
+											{heroImage.match(/\.(mp4|webm|ogg)$/i) ? (
+												<video autoplay muted loop playsinline class="h-full w-full object-cover">
+													<source src={withBase(heroImage)} type={`video/${heroImage.split('.').pop()}`} />
+													Your browser does not support the video tag.
+												</video>
+											) : (
+												<img src={withBase(heroImage)} alt={title} class="h-full w-full object-cover" loading="lazy" />
+											)}
 										</div>
 									) : (
 										<div class="mb-8 overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">

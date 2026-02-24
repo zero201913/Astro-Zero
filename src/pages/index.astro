@@ -14,7 +14,7 @@ const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 6);
 
-const HOME_WALLPAPER = `${BASE}image/home/2rd1yuubn4hc1.png`;
+const HOME_WALLPAPER = `${BASE}image/home/sakura.webm`;
 ---
 
 <!doctype html>
@@ -29,7 +29,10 @@ const HOME_WALLPAPER = `${BASE}image/home/2rd1yuubn4hc1.png`;
 			<div class="space-y-6">
 				<section class="hero-enter overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
 					<div class="relative h-[44vh] min-h-[300px] w-full">
-						<img src={HOME_WALLPAPER} alt="Homepage wallpaper" class="h-full w-full object-cover" />
+						<video autoplay muted loop playsinline class="h-full w-full object-cover">
+							<source src={HOME_WALLPAPER} type="video/mp4" />
+							Your browser does not support the video tag.
+						</video>
 						<div class="absolute inset-0 bg-zinc-900/10 dark:bg-zinc-950/25"></div>
 					</div>
 				</section>
