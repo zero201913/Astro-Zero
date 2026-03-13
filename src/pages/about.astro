@@ -3,34 +3,120 @@ import Layout from '../layouts/BlogPost.astro';
 import TerminalQuote from '../components/TerminalQuote.astro';
 
 const nowText =
-	"Now: Learning finite element analysis (FEA) software,using ANSA, ANSYS, and COMSOL,for battery-related engineering problems, running electrochemical testing and analysis, and building PV parking lot EMS features step by step.";
+	"Now: Exploring full-stack development, diving deeper into front-end frameworks, back-end systems, and database technologies, while sharing practical guides and insights on technology and life."
+const backgroundText =
+	"With a foundation in energy engineering and a passion for technology, I've transitioned into full-stack development, combining analytical thinking with creative problem-solving."
+const journeyText =
+	"My technical journey began with curiosity about how systems work, leading me to explore various technologies and build practical solutions."
 ---
 
 <Layout
 	title="About Me"
-	description="You can call me Zero02, or 零."
-	pubDate={new Date('Feb 10 2026')}
+	description="Zero02, a full-stack developer and tech enthusiast sharing knowledge, experiences, and practical insights across various technology domains."
+	pubDate={new Date('Mar 13 2026')}
 	heroImage="/image/about/info.webm"
 	profileImage="/image/Zero02.jpg"
 >
 	<p>
-		I am Zero02 (零), an energy engineering student from China. I care about practical
-		engineering, clear reasoning, and building systems that can be explained and reproduced.
-		This blog is my long-term notebook for experiments, tools, and technical decisions.
+		I am Zero02 (零), a passionate full-stack developer and tech enthusiast from China. I believe in practical engineering, clear reasoning, and building systems that can be explained and reproduced. 
+		This blog is my long-term notebook for sharing knowledge, experiments, tools, and technical decisions across various technology domains.
 	</p>
 
-	<h2>Focus</h2>
+	<h2>Background</h2>
+	<p>
+		{backgroundText} I bring a unique perspective to software development, combining the analytical mindset from engineering with the creativity of modern web technologies. 
+		My diverse background allows me to approach problems from multiple angles and find innovative solutions.
+	</p>
+
+	<h2>Technical Journey</h2>
+	<p>
+		{journeyText} From learning the basics of programming to building complex web applications, I've always been driven by the desire to create useful tools and share knowledge with others. 
+		My approach to learning is hands-on—building projects and experimenting with new technologies to gain practical experience.
+	</p>
+
+	<h2>Technical Expertise</h2>
 	<ul>
-		<li>Electrochemistry and materials aging: CV / EIS / ECSA analysis, battery degradation, and characterization</li>
-		<li>Simulation and modeling: battery-oriented FEM studies, Simulink models, and reproducible workflows</li>
 		<li>
-			AI and applied systems: Stable Diffusion, LLM-assisted tooling, and
-			<a href="https://creatinf.com/" target="_blank" rel="noreferrer">CreatInf</a>
+			<strong>Front-end Development:</strong>
+			<ul>
+				<li>HTML5, CSS3, JavaScript (ES6+)</li>
+				<li>Frameworks: React, Vue, Next.js</li>
+				<li>Styling: Tailwind CSS, Sass, Bootstrap, Element Plus & Ant Design</li>
+				<li>Tools: Webpack, Vite, npm, pnpm</li>
+			</ul>
+		</li>
+		<li>
+			<strong>Back-end Development:</strong>
+			<ul>
+				<li>Languages: Java, Node.js</li>
+				<li>Frameworks: Spring, Spring Boot, Spring Cloud, Egg.js</li>
+				<li>Deployment: Docker, Linux, CI/CD practices</li>
+			</ul>
+		</li>
+		<li>
+			<strong>Database Technologies:</strong>
+			<ul>
+				<li>Relational: MySQL, PostgreSQL</li>
+				<li>NoSQL: MongoDB, Redis</li>
+				<li>Search: Elasticsearch</li>
+				<li>ORM: MyBatis-Plus, Hibernate</li>
+			</ul>
+		</li>
+		<li>
+			<strong>AI & Creative Technologies:</strong>
+			<ul>
+				<li>Stable Diffusion</li>
+				<li>LLM-assisted tooling</li>
+				<li>Creative coding</li>
+			</ul>
 		</li>
 	</ul>
 
+	<h2>Content Philosophy</h2>
+	<p>
+		I create content that is practical, actionable, and focused on real-world applications. Whether it's a step-by-step guide to building a personal blog, a deep dive into a specific technology, or insights on career development, 
+		my goal is to provide value that helps others learn and grow in their technical journey. 
+		I believe in clear explanations, practical examples, and sharing both successes and challenges to create a comprehensive learning experience.
+	</p>
+
+	<h2>Notable Projects</h2>
+	<ul>
+		<li><strong>Personal Blog Platform:</strong> Built with Astro, Tailwind CSS, and Markdown for content management</li>
+		<li><strong>GoFile Download Tool:</strong> A utility for batch downloading files from GoFile</li>
+		<li><strong>Tablet Second Monitor Setup:</strong> Created a guide for using Sunshine to turn a tablet into a second monitor</li>
+		<li><strong>Various Full-Stack Applications:</strong> Built with modern frameworks and best practices</li>
+	</ul>
+
+	<h2>Learning Approach</h2>
+	<p>
+		My learning philosophy is centered around <strong>project-based learning</strong> and <strong>continuous improvement</strong>. I believe the best way to learn is by doing, so I'm constantly working on new projects that challenge me to acquire new skills. 
+		I also value the importance of sharing knowledge, as teaching others helps reinforce my own understanding.
+	</p>
+
 	<h2>Now</h2>
 	<TerminalQuote text={nowText} once={true} fixedHeight={false} />
+
+	<h2>Featured Content</h2>
+	<p>
+		Some of my most popular guides include:
+	</p>
+	<ul>
+		<li><a href="/blog/how-to-build-a-personal-blog/" target="_self">How to Build a Personal Blog</a></li>
+		<li><a href="/blog/how-to-get-started-with-programming/" target="_self">How to Get Started with Programming</a></li>
+		<li><a href="/blog/how-i-turned-my-tablet-into-a-second-monitor-with-sunshine/" target="_self">How I Turned My Tablet into a Second Monitor</a></li>
+		<li><a href="/blog/gofile-download-tool-guide/" target="_self">GoFile Download Tool Guide</a></li>
+	</ul>
+
+	<h2>Personal Interests</h2>
+	<p>
+		Beyond technology, I enjoy exploring various interests that complement my technical work:
+	</p>
+	<ul>
+		<li><strong>Engineering:</strong> Continuing to follow developments in energy and materials science</li>
+		<li><strong>Creativity:</strong> Experimenting with digital art and creative coding</li>
+		<li><strong>Learning:</strong> Exploring new technologies and staying updated with industry trends</li>
+		<li><strong>Productivity:</strong> Optimizing workflows and tools for efficient development</li>
+	</ul>
 
 	<h2>Contact</h2>
 	<p>
@@ -39,5 +125,11 @@ const nowText =
 		or
 		<code>crimson201913@gmail.com</code>.
 		You can also find me via GitHub and Bilibili from the site navigation.
+	</p>
+
+	<h2>Let's Connect</h2>
+	<p>
+		I'm always open to connecting with fellow developers, collaborating on projects, or discussing new ideas. 
+		Feel free to reach out if you have any questions, suggestions, or just want to say hello!
 	</p>
 </Layout>

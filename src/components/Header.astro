@@ -15,7 +15,7 @@ interface Props {
 }
 
 const BASE = import.meta.env.BASE_URL;
-const BLOG_REPO_URL = 'https://github.com/zero201913/ZeroBlog';
+const BLOG_REPO_URL = 'https://github.com/zero201913/Astro-Zero';
 const NAV_LINKS = getNavLinks(BASE);
 const { showTocButton = false } = Astro.props as Props;
 ---
@@ -67,12 +67,11 @@ const { showTocButton = false } = Astro.props as Props;
 		</div>
 		<div class="flex items-center gap-2">
 			<a href={BLOG_REPO_URL} target="_blank" rel="noreferrer" aria-label="DanArnoux Blog Repository">
-				<img
-					src={`${BASE}image/Zero02.jpg`}
-					alt="Zero02 avatar"
-					class="h-9 w-9 rounded-full border border-zinc-200 object-cover transition-transform duration-200 ease-out hover:scale-105 active:scale-95 dark:border-zinc-700"
-				/>
-			</a>
+			<div
+				class="h-9 w-9 rounded-full border border-zinc-200 object-cover transition-transform duration-200 ease-out hover:scale-105 active:scale-95 dark:border-zinc-700"
+				style={`background-image: url('${BASE}image/Zero02.jpg'); background-size: cover; background-position: center;`}
+			></div>
+		</a>
 			<a
 				href={GITHUB_URL}
 				target="_blank"
@@ -131,6 +130,14 @@ const { showTocButton = false } = Astro.props as Props;
 
 		const root = document.documentElement;
 		const storageKey = 'theme';
+		
+		// 从 localStorage 读取并应用保存的主题
+		const savedTheme = localStorage.getItem(storageKey);
+		if (savedTheme) {
+			root.classList.toggle('dark', savedTheme === 'dark');
+			root.dataset.theme = savedTheme;
+		}
+		
 		const updateAria = () => {
 			const isDark = root.classList.contains('dark');
 			button.setAttribute('aria-pressed', String(isDark));

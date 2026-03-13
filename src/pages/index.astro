@@ -1,4 +1,4 @@
-﻿---
+﻿﻿---
 import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -29,10 +29,10 @@ const HOME_WALLPAPER = `${BASE}image/home/sakura.webm`;
 			<div class="space-y-6">
 				<section class="hero-enter overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
 					<div class="relative h-[44vh] min-h-[300px] w-full">
-						<video autoplay muted loop playsinline class="h-full w-full object-cover">
-							<source src={HOME_WALLPAPER} type="video/mp4" />
-							Your browser does not support the video tag.
-						</video>
+						<video autoplay muted loop playsinline preload="auto" class="h-full w-full object-cover">
+						<source src={HOME_WALLPAPER} type="video/webm" />
+						Your browser does not support the video tag.
+					</video>
 						<div class="absolute inset-0 bg-zinc-900/10 dark:bg-zinc-950/25"></div>
 					</div>
 				</section>
