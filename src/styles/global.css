@@ -1,0 +1,780 @@
+@config "../../tailwind.config.mjs";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Base layer keeps global rendering stable before component-level styles load. */
+@layer base {
+	:root {
+		color-scheme: light;
+	}
+
+	html.dark {
+		color-scheme: dark;
+	}
+
+	html {
+		overflow-y: scroll;
+		scroll-behavior: auto;
+		scrollbar-gutter: stable;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(120, 120, 120, 0.28) transparent;
+	}
+
+	body {
+		@apply bg-zinc-50 text-zinc-800 font-sans antialiased transition-colors duration-200 dark:bg-zinc-950 dark:text-zinc-200;
+	}
+
+	a {
+		@apply text-blue-600 transition-colors duration-200 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-sans font-semibold tracking-tight text-zinc-900 dark:text-zinc-100;
+	}
+
+	code,
+	pre,
+	kbd,
+	samp {
+		@apply font-mono;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+
+		/* Respect reduced-motion globally to avoid accidental animation from utility classes. */
+		*,
+		*::before,
+		*::after {
+			animation-duration: 1ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 1ms !important;
+			scroll-behavior: auto !important;
+		}
+
+		.card-interactive,
+		.icon-button,
+		.hero-enter,
+		.section-enter,
+		.card-enter,
+		.page-fade-in {
+			animation: none !important;
+			transform: none !important;
+		}
+
+		.card-interactive:hover,
+		.icon-button:hover,
+		.icon-button:active {
+			transform: none !important;
+			box-shadow: none !important;
+		}
+
+		::view-transition-old(page-main),
+		::view-transition-new(page-main),
+		::view-transition-old(page-title),
+		::view-transition-new(page-title) {
+			animation: none !important;
+		}
+	}
+}
+
+html::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+html::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.28);
+	border-radius: 9999px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}
+
+html:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.45);
+}
+
+html.dark {
+	scrollbar-color: rgba(160, 160, 160, 0.3) transparent;
+}
+
+html.dark::-webkit-scrollbar-thumb {
+	background-color: rgba(160, 160, 160, 0.3);
+}
+
+html.dark:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(160, 160, 160, 0.5);
+}
+
+@layer components {
+	.page-shell {
+		@apply mx-auto w-full max-w-5xl px-4;
+	}
+
+	.page-fade-in {
+		animation: page-load-fade 220ms ease-out both;
+	}
+
+	.card-surface {
+		@apply rounded-xl border border-zinc-200 bg-white transition-all duration-200 dark:border-zinc-700 dark:bg-zinc-900;
+	}
+
+	.card-interactive {
+		@apply transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800;
+	}
+
+	.nav-item {
+		@apply transition-colors duration-200 ease-in-out hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80;
+	}
+
+	.icon-button {
+		@apply transition-transform duration-200 ease-out hover:scale-105 active:scale-95;
+	}
+
+	.hero-enter {
+		animation: hero-fade-up 220ms ease-out both;
+	}
+
+	.section-enter {
+		animation: section-rise 240ms ease-out both;
+	}
+
+	.section-enter-delay-1 {
+		animation-delay: 70ms;
+	}
+
+	.section-enter-delay-2 {
+		animation-delay: 120ms;
+	}
+
+	.card-enter {
+		animation: card-rise 240ms ease-out both;
+	}
+
+	.hero-enter-delay {
+		animation-delay: 90ms;
+	}
+
+	.hero-enter-delay-2 {
+		animation-delay: 140ms;
+	}
+
+	.markdown-prose {
+		@apply prose prose-zinc dark:prose-invert font-sans max-w-none;
+		@apply prose-headings:font-sans prose-headings:font-semibold prose-headings:tracking-tight;
+		@apply prose-p:leading-8 prose-li:leading-8 prose-strong:font-semibold;
+		@apply prose-a:text-blue-600 hover:prose-a:text-blue-700 dark:prose-a:text-blue-400 dark:hover:prose-a:text-blue-300;
+		@apply prose-pre:rounded-xl prose-pre:border prose-pre:border-zinc-200 prose-pre:bg-zinc-900 prose-pre:text-zinc-100;
+		@apply dark:prose-pre:border-zinc-700 dark:prose-pre:bg-zinc-900;
+		@apply prose-code:font-mono prose-code:text-[0.9em];
+		@apply prose-code:before:content-none prose-code:after:content-none;
+		@apply prose-blockquote:border-zinc-300 prose-blockquote:text-zinc-600 dark:prose-blockquote:border-zinc-600 dark:prose-blockquote:text-zinc-300;
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.markdown-prose>* {
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.markdown-prose :where(code):not(:where(pre code)) {
+		@apply rounded-md bg-zinc-100 px-1.5 py-0.5 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-100;
+		overflow-wrap: anywhere;
+		word-break: break-word;
+		white-space: break-spaces;
+	}
+
+	.markdown-prose iframe[src$='.pdf'] {
+		@apply mt-6 w-full rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900;
+		height: min(80vh, 860px);
+	}
+
+	.markdown-prose :is(h2, h3, h4) {
+		scroll-margin-top: 96px;
+	}
+
+	.markdown-prose :is(blockquote, ul, ol) {
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert {
+		@apply my-6 rounded-2xl border border-zinc-200 border-l-4 bg-zinc-50 px-4 py-3 text-zinc-700 not-italic dark:border-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-200;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert>p {
+		@apply my-2 leading-7;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert .markdown-alert-title {
+		@apply mb-2 mt-0 text-xs font-semibold uppercase tracking-wide;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert>.markdown-alert-title+p {
+		@apply mt-0;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert-note {
+		@apply border-l-sky-500 bg-sky-50/75 dark:border-l-sky-400 dark:bg-sky-950/25;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert-tip {
+		@apply border-l-emerald-500 bg-emerald-50/75 dark:border-l-emerald-400 dark:bg-emerald-950/25;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert-important {
+		@apply border-l-violet-500 bg-violet-50/75 dark:border-l-violet-400 dark:bg-violet-950/25;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert-warning {
+		@apply border-l-amber-500 bg-amber-50/80 dark:border-l-amber-400 dark:bg-amber-950/25;
+	}
+
+	:where(.prose, .markdown-prose) .markdown-alert-caution {
+		@apply border-l-rose-500 bg-rose-50/80 dark:border-l-rose-400 dark:bg-rose-950/25;
+	}
+
+	:where(.prose, .markdown-prose) blockquote.markdown-alert {
+		@apply not-italic;
+	}
+
+	:where(.prose, .markdown-prose) blockquote.markdown-alert p:first-of-type::before,
+	:where(.prose, .markdown-prose) blockquote.markdown-alert p:first-of-type::after {
+		content: none;
+	}
+
+	.markdown-prose :where(h1, h2, h3, h4, h5, h6, p, li, a, blockquote) {
+		overflow-wrap: anywhere;
+		word-break: break-word;
+		hyphens: auto;
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	.markdown-prose img {
+		cursor: zoom-in;
+		max-width: 100%;
+		height: auto;
+	}
+
+	.markdown-prose :is(table,
+		pre,
+		pre.astro-code,
+		pre.shiki,
+		pre[data-language],
+		.expressive-code,
+		.expressive-code pre,
+		.expressive-code figure,
+		figure[data-rehype-pretty-code-figure],
+		div[data-rehype-pretty-code-fragment],
+		.katex-display,
+		mjx-container[display='true'],
+		iframe,
+		iframe[src$='.pdf'],
+		embed,
+		object) {
+		/* Force horizontal scroll at container level to avoid width reflow from long code/math lines. */
+		max-width: 100%;
+		overflow-x: auto;
+		overflow-y: hidden;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+		touch-action: pan-x pan-y;
+		min-width: 0;
+		/* Disable text selection on mobile to allow smooth scrolling */
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	/* Re-enable text selection for desktop */
+	@media (hover: hover) and (pointer: fine) {
+
+		.markdown-prose :is(table,
+			pre,
+			pre.astro-code,
+			pre.shiki,
+			pre[data-language],
+			.expressive-code,
+			.expressive-code pre,
+			.expressive-code figure,
+			figure[data-rehype-pretty-code-figure],
+			div[data-rehype-pretty-code-fragment]) {
+			-webkit-user-select: text;
+			-moz-user-select: text;
+			-ms-user-select: text;
+			user-select: text;
+		}
+	}
+
+	.markdown-prose table {
+		display: block;
+		width: max-content;
+		min-width: 100%;
+	}
+
+	.markdown-prose :is(pre,
+		pre.astro-code,
+		pre.shiki,
+		pre[data-language],
+		.expressive-code pre,
+		figure[data-rehype-pretty-code-figure] pre,
+		div[data-rehype-pretty-code-fragment] pre) {
+		/* Code block stability fix: remove max-content sizing so late font loads don't stretch layout. */
+		overflow-wrap: normal !important;
+		word-break: normal !important;
+		line-height: 1.5 !important;
+		font-variant-ligatures: none !important;
+		scrollbar-gutter: stable !important;
+		font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB", sans-serif !important;
+		font-size: 18px !important;
+		position: relative !important;
+	}
+
+	/* Code block wrapper for copy button */
+	.markdown-prose pre {
+		position: relative;
+	}
+
+	/* Copy button for code blocks */
+	.code-copy-btn {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		padding: 6px 12px;
+		background: rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 6px;
+		color: #e4e4e7;
+		font-size: 12px;
+		font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		z-index: 10;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.code-copy-btn:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: rgba(255, 255, 255, 0.3);
+	}
+
+	.code-copy-btn:active {
+		transform: scale(0.95);
+	}
+
+	.code-copy-btn.copied {
+		background: rgba(34, 197, 94, 0.2);
+		border-color: rgba(34, 197, 94, 0.3);
+		color: #4ade80;
+	}
+
+	.markdown-prose :is(pre code,
+		pre.astro-code code,
+		pre.shiki code,
+		pre[data-language] code,
+		.expressive-code pre code,
+		figure[data-rehype-pretty-code-figure] pre code,
+		div[data-rehype-pretty-code-fragment] pre code) {
+		/* Keep code text metrics deterministic to reduce subtle post-paint shifts. */
+		white-space: pre !important;
+		overflow-wrap: normal !important;
+		word-break: normal !important;
+		display: block !important;
+		width: auto !important;
+		min-width: 0 !important;
+		line-height: 1.5 !important;
+		font-variant-ligatures: none !important;
+		font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB", sans-serif !important;
+		font-size: 18px !important;
+	}
+
+	.markdown-prose :is(pre code .line,
+		pre.astro-code code .line,
+		pre.shiki code .line,
+		pre[data-language] code .line,
+		.expressive-code pre code .line,
+		figure[data-rehype-pretty-code-figure] pre code .line,
+		div[data-rehype-pretty-code-fragment] pre code .line) {
+		display: block !important;
+		/* `.line` width must stay fluid; max-content amplifies glyph-width changes after font swap. */
+		min-width: 0 !important;
+		line-height: 1.5 !important;
+		font-variant-ligatures: none !important;
+		font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB", sans-serif !important;
+		font-size: 18px !important;
+	}
+
+	.markdown-prose :is(.katex-display, mjx-container[display='true']) {
+		max-width: 100%;
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior-x: contain;
+	}
+
+	@media (max-width: 30rem) {
+		header nav.page-shell {
+			min-width: 0;
+		}
+
+		header nav.page-shell>.flex.items-center.gap-6 {
+			min-width: 0;
+			gap: 0.5rem;
+		}
+
+		header nav.page-shell>.flex.items-center.gap-6> :is(button, a) {
+			min-width: 0;
+		}
+
+		header nav.page-shell>.flex.items-center.gap-6>button {
+			padding-inline: 0.5rem;
+			gap: 0.25rem;
+		}
+
+		header nav.page-shell>.flex.items-center.gap-2 {
+			min-width: 0;
+			gap: 0.25rem;
+		}
+
+		header nav.page-shell>.flex.items-center.gap-2>a[aria-label='CreatInf'] {
+			display: none;
+		}
+
+		.blog-post-page,
+		.blog-post-page>div,
+		.blog-post-page main,
+		.blog-post-page article,
+		.blog-post-page .markdown-prose {
+			min-width: 0;
+			max-width: 100%;
+		}
+
+		.blog-post-page .markdown-prose :where(h1, h2, h3, h4, h5, h6, p, li, a, blockquote) {
+			overflow-wrap: anywhere;
+			word-break: break-word;
+			hyphens: auto;
+		}
+	}
+}
+
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+	/* Theme transition is color-only to prevent geometry changes during dark/light toggles. */
+	transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, box-shadow;
+	transition-duration: 200ms;
+	transition-timing-function: ease-in-out;
+}
+
+@keyframes hero-fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(12px) scale(0.995);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes section-rise {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes card-rise {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes page-load-fade {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+::view-transition-group(page-main),
+::view-transition-group(page-title) {
+	/* Shared transition groups use a short ease-out to reduce perceived route latency. */
+	animation-duration: 220ms;
+	animation-timing-function: ease-out;
+}
+
+::view-transition-old(page-main),
+::view-transition-new(page-main),
+::view-transition-old(page-title),
+::view-transition-new(page-title) {
+	/* Restrict VT work to compositor-friendly properties to avoid layout interpolation artifacts. */
+	animation-duration: 220ms;
+	animation-timing-function: ease-out;
+	backface-visibility: hidden;
+	contain: paint;
+	transform: translateZ(0);
+	will-change: opacity, transform;
+}
+
+::view-transition-new(page-main),
+::view-transition-new(page-title) {
+	animation-name: page-fade-in;
+}
+
+::view-transition-old(page-main),
+::view-transition-old(page-title) {
+	animation-name: page-fade-out;
+}
+
+@keyframes page-fade-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes page-fade-out {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
+.toc-scroll {
+	/* TOC keeps its own scroll context so sidebar behavior never fights the main document scroll. */
+	scrollbar-width: thin;
+	scrollbar-color: rgba(120, 120, 120, 0.16) transparent;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
+}
+
+.toc-scroll:hover,
+[data-toc-fade-wrap]:hover .toc-scroll {
+	scrollbar-color: rgba(120, 120, 120, 0.42) transparent;
+}
+
+.toc-scroll::-webkit-scrollbar {
+	width: 5px;
+}
+
+.toc-scroll::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.toc-scroll::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.16);
+	border-radius: 9999px;
+	border: 1px solid transparent;
+	background-clip: content-box;
+}
+
+.toc-scroll:hover::-webkit-scrollbar-thumb,
+[data-toc-fade-wrap]:hover .toc-scroll::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.42);
+}
+
+.dark .toc-scroll {
+	scrollbar-color: rgba(160, 160, 160, 0.18) transparent;
+}
+
+.dark .toc-scroll:hover,
+.dark [data-toc-fade-wrap]:hover .toc-scroll {
+	scrollbar-color: rgba(180, 180, 180, 0.46) transparent;
+}
+
+.dark .toc-scroll::-webkit-scrollbar-thumb {
+	background-color: rgba(160, 160, 160, 0.18);
+}
+
+.dark .toc-scroll:hover::-webkit-scrollbar-thumb,
+.dark [data-toc-fade-wrap]:hover .toc-scroll::-webkit-scrollbar-thumb {
+	background-color: rgba(180, 180, 180, 0.46);
+}
+
+.toc-fade {
+	transition: opacity 140ms ease-out;
+	z-index: 2;
+}
+
+.toc-fade-top {
+	background: linear-gradient(to bottom, rgba(250, 250, 250, 0.95), rgba(250, 250, 250, 0));
+}
+
+.toc-fade-bottom {
+	background: linear-gradient(to top, rgba(250, 250, 250, 0.95), rgba(250, 250, 250, 0));
+}
+
+.dark .toc-fade-top {
+	background: linear-gradient(to bottom, rgba(9, 9, 11, 0.95), rgba(9, 9, 11, 0));
+}
+
+.dark .toc-fade-bottom {
+	background: linear-gradient(to top, rgba(9, 9, 11, 0.95), rgba(9, 9, 11, 0));
+}
+
+.markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true']) {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(120, 120, 120, 0.32) transparent;
+}
+
+.markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true'])::-webkit-scrollbar {
+	height: 8px;
+	width: 8px;
+}
+
+.markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true'])::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true'])::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.32);
+	border-radius: 9999px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}
+
+.markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true']):hover::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.5);
+}
+
+.dark .markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true']) {
+	scrollbar-color: rgba(170, 170, 170, 0.34) transparent;
+}
+
+.dark .markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true'])::-webkit-scrollbar-thumb {
+	background-color: rgba(170, 170, 170, 0.34);
+}
+
+.dark .markdown-prose :is(pre,
+	table,
+	.expressive-code,
+	.expressive-code pre,
+	.expressive-code figure,
+	figure[data-rehype-pretty-code-figure],
+	div[data-rehype-pretty-code-fragment],
+	.katex-display,
+	mjx-container[display='true']):hover::-webkit-scrollbar-thumb {
+	background-color: rgba(170, 170, 170, 0.52);
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.markdown-prose,
+article {
+	font-family: "Alibaba PuHuiTi", Inter, system-ui, -apple-system, "Segoe UI", sans-serif !important;
+}
+
+.markdown-prose :where(p, li, blockquote, table, span, h1, h2, h3, h4),
+article :where(p, li, blockquote, table, span, h1, h2, h3, h4) {
+	font-family: inherit !important;
+}
+
+.markdown-prose :where(code, pre),
+article :where(code, pre) {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+}

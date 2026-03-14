@@ -1,0 +1,165 @@
+﻿---
+import { BILIBILI_URL, CREATINF_URL, GITHUB_URL, SITE_TITLE } from '../consts';
+import { getNavLinks } from '../data/navLinks';
+import HeaderLink from './HeaderLink.astro';
+
+/*
+ * Global site header:
+ * - provides primary navigation on desktop
+ * - exposes mobile trigger hooks for navigation/TOC drawers
+ * - owns theme toggle and social identity actions
+ */
+interface Props {
+	// Enables TOC trigger only for pages that actually provide headings.
+	showTocButton?: boolean;
+}
+
+const BASE = import.meta.env.BASE_URL;
+const BLOG_REPO_URL = 'https://github.com/zero201913/Astro-Zero';
+const NAV_LINKS = getNavLinks(BASE);
+const { showTocButton = false } = Astro.props as Props;
+---
+
+<header class="sticky top-0 z-50 border-b border-zinc-200/90 bg-zinc-50/95 backdrop-blur transition-colors duration-200 dark:border-zinc-800 dark:bg-zinc-950/90">
+	<nav class="page-shell flex h-16 items-center justify-between gap-4">
+		<div class="flex items-center gap-6">
+			<!-- Stable trigger ID consumed by MobileDrawer script. -->
+			<button
+				type="button"
+				id="mobile-menu-button"
+				class="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:text-zinc-900 md:hidden dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-zinc-500 dark:hover:text-zinc-100"
+				aria-controls="mobile-drawer"
+				aria-expanded="false"
+			>
+				<svg viewBox="0 0 24 24" class="h-4 w-4 fill-current" aria-hidden="true">
+					<path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13a1.5 1.5 0 1 1 0 3h-13A1.5 1.5 0 0 1 4 6.5Zm0 5.5a1.5 1.5 0 0 1 1.5-1.5h13a1.5 1.5 0 0 1 0 3h-13A1.5 1.5 0 0 1 4 12Zm1.5 4a1.5 1.5 0 1 0 0 3h13a1.5 1.5 0 0 0 0-3h-13Z" />
+				</svg>
+				<span>Menu</span>
+			</button>
+			<!-- TOC drawer binds to this trigger and only renders on mobile. -->
+			{
+				showTocButton && (
+					<button
+						type="button"
+						id="toc-menu-button"
+						class="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:text-zinc-900 md:hidden dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-zinc-500 dark:hover:text-zinc-100"
+						aria-controls="toc-drawer"
+						aria-expanded="false"
+						aria-label="Open table of contents"
+					>
+						<svg viewBox="0 0 24 24" class="h-4 w-4 fill-current" aria-hidden="true">
+							<path d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1Zm0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1Zm1 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H5Z" />
+						</svg>
+						<span>TOC</span>
+					</button>
+				)
+			}
+			<a href={`${BASE}`} class="hidden text-base font-semibold tracking-tight text-zinc-900 no-underline md:inline dark:text-zinc-100">
+				{SITE_TITLE}
+			</a>
+			<div class="hidden items-center gap-1 text-sm md:flex">
+				{
+					NAV_LINKS.map((link) => (
+						<HeaderLink href={link.href}>{link.label}</HeaderLink>
+					))
+				}
+			</div>
+		</div>
+		<div class="flex items-center gap-2">
+			<a href={BLOG_REPO_URL} target="_blank" rel="noreferrer" aria-label="DanArnoux Blog Repository">
+			<div
+				class="h-9 w-9 rounded-full border border-zinc-200 object-cover transition-transform duration-200 ease-out hover:scale-105 active:scale-95 dark:border-zinc-700"
+				style={`background-image: url('${BASE}image/Zero02.jpg'); background-size: cover; background-position: center;`}
+			></div>
+		</a>
+			<a
+				href={GITHUB_URL}
+				target="_blank"
+				rel="noreferrer"
+				class="icon-button inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-600 transition-colors hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-500 dark:hover:text-zinc-100"
+				aria-label="GitHub"
+			>
+				<svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
+					<path d="M12 .3A12 12 0 0 0 8.2 23.7c.6.1.8-.2.8-.6v-2.3c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.8 1.1 1.8 1.1 1 .1 1.6.7 2 1.3.9.2 1.8.4 2.7.1.1-.7.4-1.3.7-1.7-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.1-3.2-.1-.3-.5-1.5.1-3.2 0 0 .9-.3 3.2 1.1a10.9 10.9 0 0 1 5.9 0c2.2-1.4 3.2-1.1 3.2-1.1.6 1.7.2 2.9.1 3.2.7.8 1.1 1.9 1.1 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6A12 12 0 0 0 12 .3" />
+				</svg>
+				<span class="sr-only">GitHub</span>
+			</a>
+			<a
+				href={BILIBILI_URL}
+				target="_blank"
+				rel="noreferrer"
+				class="icon-button inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-600 transition-colors hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-500 dark:hover:text-zinc-100"
+				aria-label="Bilibili"
+			>
+				<svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
+					<path d="M7.4 2.8a1 1 0 0 1 1.4 0L12 6l3.2-3.2a1 1 0 1 1 1.4 1.4L14.5 6.3h3.8A3.7 3.7 0 0 1 22 10v8.3A3.7 3.7 0 0 1 18.3 22H5.7A3.7 3.7 0 0 1 2 18.3V10a3.7 3.7 0 0 1 3.7-3.7h3.8L7.4 4.2a1 1 0 0 1 0-1.4ZM5.7 8.3A1.7 1.7 0 0 0 4 10v8.3c0 .9.8 1.7 1.7 1.7h12.6c.9 0 1.7-.8 1.7-1.7V10c0-.9-.8-1.7-1.7-1.7H5.7Zm1.8 3a1 1 0 0 1 1 1v3.4a1 1 0 1 1-2 0v-3.4a1 1 0 0 1 1-1Zm9 0a1 1 0 0 1 1 1v3.4a1 1 0 1 1-2 0v-3.4a1 1 0 0 1 1-1Z" />
+				</svg>
+				<span class="sr-only">Bilibili</span>
+			</a>
+			<a
+				href={CREATINF_URL}
+				target="_blank"
+				rel="noreferrer"
+				class="icon-button inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-600 transition-colors hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-500 dark:hover:text-zinc-100"
+				aria-label="CreatInf"
+			>
+				<span class="text-base font-semibold leading-none">∞</span>
+				<span class="sr-only">CreatInf</span>
+			</a>
+			<button
+				type="button"
+				id="theme-toggle"
+				class="icon-button inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-600 transition-colors hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-500 dark:hover:text-zinc-100"
+				aria-label="Toggle theme"
+			>
+				<svg data-theme-icon="sun" viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
+					<path d="M12 4a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1Zm0 13a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1Zm8-5a1 1 0 0 1-1 1h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1ZM7 12a1 1 0 0 1-1 1H5a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm9.7-5.3a1 1 0 0 1 0 1.4L16 8.8a1 1 0 1 1-1.4-1.4l.7-.7a1 1 0 0 1 1.4 0Zm-7.3 7.3a1 1 0 0 1 0 1.4l-.7.7a1 1 0 0 1-1.4-1.4l.7-.7a1 1 0 0 1 1.4 0Zm7.3 2.1a1 1 0 0 1-1.4 1.4l-.7-.7a1 1 0 0 1 1.4-1.4l.7.7ZM9.4 8.8A1 1 0 0 1 8 8.8l-.7-.7a1 1 0 1 1 1.4-1.4l.7.7a1 1 0 0 1 0 1.4ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z" />
+				</svg>
+				<span class="sr-only">Toggle theme</span>
+			</button>
+		</div>
+	</nav>
+</header>
+
+<script is:inline>
+	const initThemeToggle = () => {
+		const button = document.getElementById('theme-toggle');
+		// Guard prevents duplicate listeners after Astro swaps partial DOM trees.
+		if (!button || button.dataset.bound === 'true') return;
+		button.dataset.bound = 'true';
+
+		const root = document.documentElement;
+		const storageKey = 'theme';
+		
+		// 从 localStorage 读取并应用保存的主题
+		const savedTheme = localStorage.getItem(storageKey);
+		if (savedTheme) {
+			root.classList.toggle('dark', savedTheme === 'dark');
+			root.dataset.theme = savedTheme;
+		}
+		
+		const updateAria = () => {
+			const isDark = root.classList.contains('dark');
+			button.setAttribute('aria-pressed', String(isDark));
+		};
+
+		button.addEventListener('click', () => {
+			root.classList.add('theme-switching');
+			const isDark = root.classList.toggle('dark');
+			root.dataset.theme = isDark ? 'dark' : 'light';
+			localStorage.setItem(storageKey, isDark ? 'dark' : 'light');
+			updateAria();
+			window.setTimeout(() => {
+				// Remove temporary class after transition so regular interactions stay snappy.
+				root.classList.remove('theme-switching');
+			}, 240);
+		});
+
+		updateAria();
+	};
+
+	initThemeToggle();
+	// Rebind on client-side navigation because header can be re-rendered by View Transitions.
+	document.addEventListener('astro:page-load', initThemeToggle);
+	document.addEventListener('astro:after-swap', initThemeToggle);
+</script>
